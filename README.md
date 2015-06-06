@@ -8,4 +8,5 @@ and some code I wrote.
 The idea is to have colorful and happy juggling balls which can change lightning based on the sensor readings 
 and remote maniputations communicating via nrf24.
 
-Build enjoy and share.
+ShakeIt is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+https://creativecommons.org/licenses/by-nc-sa/4.0/
