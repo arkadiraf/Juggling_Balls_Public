@@ -48,7 +48,7 @@ RF24 radio(9,10);
 const uint64_t Rxpipes =0xB3F3F3b3b7LL;
 const uint64_t Txpipes =0xA3F3F3bA3c3LL;
 
-
+int msgSkip = 0;
 
 
 
@@ -88,7 +88,9 @@ void setup(){
 void loop(){
 	 // receive messega
 	 if (radio.available()){
-            radio.read( &Message.MBytes, MSGLENGHT );
+    radio.read( &Message.MBytes, MSGLENGHT );
+    msgSkip++;        
+    if (msgSkip%1 == 0){
 //            Serial.print("mill: ");
 //            Serial.print(Message.MSG.Millis);
 //            Serial.print(" Cnt: ");
@@ -107,7 +109,7 @@ void loop(){
 //            Serial.println(Message.MSG.Gyr[2]);
             
             // send to matlab/simulink:
-            Serial.print("MSG: ");
+            Serial.print("MSG:");
             Serial.print(Message.MSG.Millis);
             Serial.print(",");
             Serial.print(Message.MSG.Counter);
@@ -123,6 +125,6 @@ void loop(){
             Serial.print(Message.MSG.Gyr[1]);
             Serial.print(",");
             Serial.println(Message.MSG.Gyr[2]);
-                
-          }         
+    }    
+   }         
 }// end main
