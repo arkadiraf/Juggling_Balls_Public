@@ -26,7 +26,7 @@
     Rx --> through 1k
     Grnd --> battery GRN
 */
-#define BallNumber 1
+#define BallNumber 12
 ///////////////
 // libraries //
 ///////////////
@@ -52,7 +52,7 @@
 
 MPU6050 accelgyro;
 
-#define MPUREADDELAY 10
+#define MPUREADDELAY 1 //10
 // Single radio pipe address for the 2 nodes to communicate.
 
 const byte INT_MPU_PIN = 2; // INT DRDYG
@@ -99,7 +99,7 @@ const uint64_t Rxpipes =0xA3F3F3bA3c3LL;
 double Vbaterry=3.7;
 #define VBATTERY_PIN A0
 #define ADC2VBAT 163.0 // Convert ADC reading to voltage, VBatt*10/57=Vref/ADC_Res Vref=1.1v ADC_Res=1023 
-#define BATTERYMINIMUM 3.3 // minimum allowed battery voltage
+#define BATTERYMINIMUM 3.0 // minimum allowed battery voltage
 byte BatteryStatus=1; // variable to indicate battery status,0- empty, 1-full
 #define BatterySampleDelay 1000 // sample period of the battery voltage
 unsigned long VbatSampleMillis=0; // variable to hold millis counter
@@ -124,11 +124,15 @@ void setup(){
       // join I2C bus (I2Cdev library doesn't do this automatically)
     Wire.begin();
     // initialize serial communication
-    Serial.begin(57600);
+    Serial.begin(115200);
   // neo Pixel initialize
   strip.begin();
+  for(int i=0;i<NEOPIXELS;i++){
+    // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+    strip.setPixelColor(i, strip.Color(0,100,0)); // Moderately bright green color.
+  }
+  //strip.setPixelColor(0, strip.Color(0,0,100)); // Moderately bright green color.
   strip.show(); // Initialize all pixels to 'off'
-  
   // Nrf initialize
   radio.begin();
   radio.setChannel(52);
@@ -205,6 +209,23 @@ void loop(){
 //                AcclValue[0]=((double)ax)/SAMPLE2GACC;
 //                AcclValue[1]=((double)ay)/SAMPLE2GACC;
 //                AcclValue[2]=((double)az)/SAMPLE2GACC;
+            Serial.print("MSG: ");
+            Serial.print(Message.MSG.Millis);
+            Serial.print(",");
+            Serial.print(Message.MSG.Counter);
+            Serial.print(",");
+            Serial.print(Message.MSG.Acc[0]);
+            Serial.print(",");
+            Serial.print(Message.MSG.Acc[1]);
+            Serial.print(",");
+            Serial.print(Message.MSG.Acc[2]);
+            Serial.print(",");
+            Serial.print(Message.MSG.Gyr[0]);
+            Serial.print(",");
+            Serial.print(Message.MSG.Gyr[1]);
+            Serial.print(",");
+            Serial.println(Message.MSG.Gyr[2]);
+//
 //            Serial.print("mill: ");
 //            Serial.print(Message.MSG.Millis);
 //            Serial.print(" Cnt: ");
